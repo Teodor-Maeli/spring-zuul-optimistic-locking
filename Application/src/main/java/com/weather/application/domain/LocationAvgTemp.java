@@ -1,7 +1,6 @@
 package com.weather.application.domain;
 
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +28,7 @@ public class LocationAvgTemp {
 
   @Version
   @Column(name = "Version")
-  private Integer version;
+  private LocalDateTime version;
 
   public LocationAvgTemp() {
   }
@@ -42,7 +41,7 @@ public class LocationAvgTemp {
     this.counter = counter;
   }
 
-  public Integer getVersion() {
+  public LocalDateTime getVersion() {
     return version;
   }
 

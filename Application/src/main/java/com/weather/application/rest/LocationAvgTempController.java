@@ -17,8 +17,8 @@ public class LocationAvgTempController {
 
   @PostMapping("/{location}/{temperature}")
   public ResponseEntity<Double> updateLocation(@PathVariable String location, @PathVariable double temperature) {
-    LocationAvgTempDto entity = new LocationAvgTempDto(location,temperature);
-    return ResponseEntity.ok(service.updateAverageTemperature(entity));
+    LocationAvgTempDto dto = new LocationAvgTempDto(location,temperature);
+    return ResponseEntity.ok(service.updateAverageTemperature(dto));
   }
 
 }
