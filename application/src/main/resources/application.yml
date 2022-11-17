@@ -1,0 +1,43 @@
+#Database config
+spring:
+    datasource:
+        password: pass
+        url: ${applicationUri:jdbc:postgresql://localhost:5432/leaves}
+        username: root1
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+        show-sql: true
+    main:
+        banner-mode: 'off'
+    application:
+        name: weather
+
+#weather application server config
+server:
+    error:
+        include-message: always
+    port: ${applicationPort:5003}
+
+#weather application register with eureka discovery server config
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        service-url:
+            defaultZone: ${eurekaDefault:http://localhost:5001/eureka/}
+    instance:
+        hostname: localhost
+
+#Actuator endpoints
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+    endpoint:
+        health:
+            show-details: always

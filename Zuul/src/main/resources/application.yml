@@ -1,0 +1,39 @@
+#weather application server config
+server:
+  error:
+    include-message: always
+  port: ${zuulPort:5002}
+
+spring:
+  application:
+    name: zuul-gateway
+#weather application register with eureka discovery server config
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone:  ${EUREKA_URI:http://localhost:5001/eureka}
+  instance:
+    hostname: localhost
+
+#Zuul routing
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 240000
+
+zuul:
+  host:
+    connect-timeout-millis: 5000000
+    socket-timeout-millis: 5000000
+  routes:
+    weather:
+      path: /weather/**
+      service-id: WEATHER
+      strip-prefix: true
+  ignored-services: '*'
+

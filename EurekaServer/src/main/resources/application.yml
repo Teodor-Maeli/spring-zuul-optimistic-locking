@@ -1,0 +1,18 @@
+#server configs
+server:
+  port: ${eurekaPort:5001}
+  error:
+    include-message: always
+
+#eureka sever configs
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:5001/eureka
+
