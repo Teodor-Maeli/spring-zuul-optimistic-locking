@@ -11,6 +11,6 @@ public @interface RetryOnFailure {
 
   public int retries() default 5;
   public int minDelayAttempt() default 100;
-  public int maxDelayAttempt() default 1000;
+  public int maxRetryDelay() default 1000;
 
 }

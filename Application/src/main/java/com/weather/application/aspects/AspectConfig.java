@@ -21,6 +21,7 @@ public class AspectConfig {
   public AspectConfig(RetryTemplate retryTemplate) {
     this.retryTemplate = retryTemplate;
   }
+
 //for retry spring library
 //  @Around("execution(* com.weather.application.rest.LocationAvgTempController.updateLocation(..))")
 //  public Object retry(final ProceedingJoinPoint point) throws Throwable {
@@ -41,10 +42,6 @@ public class AspectConfig {
   
   
   
-
-
-
-
 
 
 }

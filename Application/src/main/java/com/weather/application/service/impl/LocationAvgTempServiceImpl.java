@@ -21,6 +21,7 @@ public class LocationAvgTempServiceImpl implements LocationAvgTempService {
 
   @Override
   @Transactional
+  @RetryOnFailure(retries = 20, maxRetryDelay = 2000)
   public Double updateAverageTemperature(LocationAvgTempDto newEntry) {
     LocationAvgTemp entity;
     if (repository.existsByLocation(newEntry.getLocation())) {
@@ -43,16 +44,6 @@ public class LocationAvgTempServiceImpl implements LocationAvgTempService {
   @Transactional
   @Async
   public CompletableFuture<Double> test(String location, Double newEntry) {
-      LocationAvgTemp temp = repository.findByLocation(location);
-      temp.setSum(temp.getSum() + newEntry);
-      temp.setLocation(location);
-      repository.save(temp);
-    return null;
-  }
-
-  @Transactional
-  @Async
-  public CompletableFuture<Double> test1(String location, Double newEntry) {
       LocationAvgTemp temp = repository.findByLocation(location);
       temp.setSum(temp.getSum() + newEntry);
       temp.setLocation(location);

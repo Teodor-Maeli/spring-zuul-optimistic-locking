@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableEurekaClient
 @EnableAsync
 @EnableRetry
-@EnableAspectJAutoProxy
 public class Application {
 
   public static void main(String[] args) {

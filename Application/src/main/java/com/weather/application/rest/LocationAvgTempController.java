@@ -20,7 +20,7 @@ public class LocationAvgTempController {
   }
 
   @PostMapping("/{location}/{temperature}")
-  @RetryOnFailure(retries = 20,maxDelayAttempt = 2000)
+  @RetryOnFailure(retries = 2)
   public ResponseEntity<Double> updateLocation(@PathVariable String location, @PathVariable double temperature) {
     LocationAvgTempDto dto = new LocationAvgTempDto(location,temperature);
     return ResponseEntity.ok(service.updateAverageTemperature(dto));
@@ -29,10 +29,10 @@ public class LocationAvgTempController {
 
   //for testing purpose only
   @PostMapping("/start/threads")
-  @RetryOnFailure(retries = 20,maxDelayAttempt = 2000)
+
     public ResponseEntity<List<CompletableFuture<Double>>> start() throws InterruptedException {
       CompletableFuture<Double> temp = service.test("VAR", 33.3);
-      CompletableFuture<Double> temp1 = service.test1("VAR", 33.3);
+      CompletableFuture<Double> temp1 = service.test("VAR", 33.3);
       CompletableFuture.allOf(temp, temp1).join();
       return ResponseEntity.ok(Arrays.asList(temp,temp1));
     }
