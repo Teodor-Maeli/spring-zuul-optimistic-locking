@@ -19,8 +19,7 @@ public class RetryAspect {
   public static final Logger log = LoggerFactory.getLogger(RetryAspect.class);
 
   @Pointcut("@annotation(com.weather.application.aspects.RetryOnFailure) && execution(* *(..))")
-  public void retryableMethod() {
-  }
+  public void retryableMethod() {}
 
   @Around("retryableMethod()")
   public Object retryMethodAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -35,7 +34,6 @@ public class RetryAspect {
     int counter = 0;
     while (!success) {
       log.info("counter: {}", counter);
-      log.info("log {}" ,joinPoint.getKind());
       try {
         response = joinPoint.proceed(joinPoint.getArgs());
         success = true;
