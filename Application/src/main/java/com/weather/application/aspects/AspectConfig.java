@@ -21,18 +21,12 @@ public class AspectConfig {
   public AspectConfig(RetryTemplate retryTemplate) {
     this.retryTemplate = retryTemplate;
   }
-
-  @Around("execution(* com.weather.application.rest..*(..))")
-  public Object retry(final ProceedingJoinPoint point) throws Throwable {
-
-    return retryTemplate.execute(retryCallBack -> point.proceed());
-  }
-
-  @Around("execution(* com.weather.application.service.LocationAvgTempService.test(..))")
-  public Object test(final ProceedingJoinPoint point) throws Throwable {
-
-    return retryTemplate.execute(retryCallBack -> point.proceed());
-  }
+//for retry spring library
+//  @Around("execution(* com.weather.application.rest.LocationAvgTempController.updateLocation(..))")
+//  public Object retry(final ProceedingJoinPoint point) throws Throwable {
+//
+//    return retryTemplate.execute(retryCallBack -> point.proceed());
+//  }
 
   @Before("execution(* com.weather.application.service.LocationAvgTempService..*(..))")
   public void beforeLogger(){

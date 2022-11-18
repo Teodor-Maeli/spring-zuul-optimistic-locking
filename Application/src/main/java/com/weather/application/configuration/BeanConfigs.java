@@ -14,7 +14,7 @@ public class BeanConfigs {
   @Bean
   public RetryTemplate createRetryTemplate() {
     SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
-    retryPolicy.setMaxAttempts(10);
+    retryPolicy.setMaxAttempts(100);
 
     UniformRandomBackOffPolicy backOffPolicy = new UniformRandomBackOffPolicy();
     backOffPolicy.setMinBackOffPeriod(1000);

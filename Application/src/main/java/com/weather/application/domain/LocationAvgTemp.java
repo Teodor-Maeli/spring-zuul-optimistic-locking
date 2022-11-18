@@ -1,6 +1,5 @@
 package com.weather.application.domain;
 
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,31 +18,24 @@ public class LocationAvgTemp {
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @Column(name = "location")
+  @Column(name = "location", unique = true)
   private String location;
   @Column(name = "sum")
   private Double sum;
+  @Version
   @Column(name = "counter")
   private int counter;
 
-  @Version
-  @Column(name = "Version")
-  private LocalDateTime version;
 
   public LocationAvgTemp() {
   }
 
-
-
-  public LocationAvgTemp(String location, double sum, int counter) {
+  public LocationAvgTemp(String location, double sum) {
     this.location = location;
     this.sum = sum;
-    this.counter = counter;
+    this.counter = 1;
   }
 
-  public LocalDateTime getVersion() {
-    return version;
-  }
 
   public Long getId() {
     return id;
@@ -71,10 +63,6 @@ public class LocationAvgTemp {
 
   public int getCounter() {
     return counter;
-  }
-
-  public void setCounter(int counter) {
-    this.counter = counter;
   }
 
 }
