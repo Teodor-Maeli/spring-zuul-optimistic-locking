@@ -1,5 +1,6 @@
 package com.weather.application.aspects;
 
+import com.weather.application.dto.LocationAvgTempDto;
 import java.util.Random;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -46,10 +47,10 @@ public class RetryAspect {
         success = true;
       } catch (Exception e) {
         counter++;
-        log.info("Retry No {} failed, exception catched: {}", counter, e.getClass());
+        log.info("Retry No:{} FAILED! Exception was caught : {}", counter, e.getClass());
         Thread.sleep(new Random().nextInt(max - min + 1) + min);
         if (counter >= retries) {
-          log.info("Reached max retry attempts {}", e.getClass());
+          log.info("Reached max retry attempts {},giving up...", e.getClass());
           throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Request did not proceed , try later!");
         }
         log.info("Reattempting to complete");
