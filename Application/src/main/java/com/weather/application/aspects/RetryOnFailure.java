@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RetryOnFailure {
 
-  public int retries() default 5;
-  public int minDelayAttempt() default 100;
-  public int maxRetryDelay() default 1000;
+   int retries() default 5;
+   int minDelayAttempt() default 100;
+   int maxRetryDelay() default 1000;
 
 }

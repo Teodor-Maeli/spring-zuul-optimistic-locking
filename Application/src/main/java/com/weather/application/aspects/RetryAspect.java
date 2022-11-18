@@ -1,6 +1,5 @@
 package com.weather.application.aspects;
 
-import com.weather.application.dto.LocationAvgTempDto;
 import java.util.Random;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
