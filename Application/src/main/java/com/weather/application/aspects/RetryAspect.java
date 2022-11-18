@@ -9,6 +9,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,6 +18,12 @@ import org.springframework.web.server.ResponseStatusException;
 public class RetryAspect {
 
   public static final Logger log = LoggerFactory.getLogger(RetryAspect.class);
+
+  private RetryTemplate retryTemplate;
+
+  public RetryAspect(RetryTemplate retryTemplate) {
+    this.retryTemplate = retryTemplate;
+  }
 
   @Pointcut("@annotation(com.weather.application.aspects.RetryOnFailure) && execution(* *(..))")
   public void retryableMethod() {}
@@ -50,6 +57,14 @@ public class RetryAspect {
     }
     return response;
   }
+
+
+//for retry spring library
+//  @Around("execution(* com.weather.application.rest.LocationAvgTempController.updateLocation(..))")
+//  public Object retry(final ProceedingJoinPoint point) throws Throwable {
+//
+//    return retryTemplate.execute(retryCallBack -> point.proceed());
+//  }
 
 
 }
