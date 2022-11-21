@@ -30,7 +30,7 @@ public class LocationAvgTemp {
   public LocationAvgTemp() {
   }
 
-  public LocationAvgTemp(String location, double sum) {
+  public LocationAvgTemp(String location, Double sum) {
     this.location = location;
     this.sum = sum;
     this.counter = 1;

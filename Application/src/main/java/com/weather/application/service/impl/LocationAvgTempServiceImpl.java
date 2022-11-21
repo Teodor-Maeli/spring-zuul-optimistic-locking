@@ -28,17 +28,13 @@ public class LocationAvgTempServiceImpl implements LocationAvgTempService {
       entity = repository.findByLocation(newEntry.getLocation());
       entity.setSum(entity.getSum() + newEntry.getEntry());
       repository.save(entity);
-      return calculateAvg(entity.getCounter(), entity.getSum());
+      return LocationAvgTempService.calculateAvg(entity.getCounter(), entity.getSum());
     }
     entity = new LocationAvgTemp(newEntry.getLocation(), newEntry.getEntry());
     repository.save(entity);
-    return calculateAvg(entity.getCounter()-1, newEntry.getEntry());
+    return LocationAvgTempService.calculateAvg(entity.getCounter()-1, newEntry.getEntry());
   }
 
-  private Double calculateAvg(int counter, Double sum) {
-    Double avg = sum / (counter + 1);
-    return avg;
-  }
 
   //Testing retry method execution on locked row
   @Transactional
