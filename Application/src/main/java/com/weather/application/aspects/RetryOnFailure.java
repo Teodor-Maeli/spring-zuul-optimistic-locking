@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface RetryOnFailure {
 
    int retries() default 5;
-   int minDelayAttempt() default 100;
+   int minRetryDelay() default 100;
    int maxRetryDelay() default 1000;
 
 }

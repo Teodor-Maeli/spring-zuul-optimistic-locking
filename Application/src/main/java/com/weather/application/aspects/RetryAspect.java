@@ -37,10 +37,10 @@ public class RetryAspect {
     int max = ((MethodSignature) joinPoint.getSignature()).getMethod()
         .getAnnotation(RetryOnFailure.class).maxRetryDelay();
     int min = ((MethodSignature) joinPoint.getSignature()).getMethod()
-        .getAnnotation(RetryOnFailure.class).minDelayAttempt();
+        .getAnnotation(RetryOnFailure.class).minRetryDelay();
     int counter = 0;
     while (!success) {
-      log.info("counter: {}", counter);
+      log.info("retries used: {}", counter);
       try {
         response = joinPoint.proceed(joinPoint.getArgs());
         success = true;
