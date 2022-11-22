@@ -45,6 +45,27 @@ class LocationAvgTempServiceImplTest {
 
   private final List<String> mockMvcUris = Arrays.asList("/VAR/1","/VAR/1");
 
+
+  @Test
+  public void withoutConcurrencyTransactions() throws Exception {
+    //given
+    final LocationAvgTemp srcTemp = locationAvgTempRepository.save(new LocationAvgTemp("VAR", 1.0));
+    assertEquals(1, srcTemp.getCounter());
+    assertEquals(1.0, srcTemp.getSum());
+
+    //when
+    mvc.perform(post(mockMvcUris.get(0)));
+
+    final LocationAvgTemp modifiedTemp = locationAvgTempRepository.findByLocation(
+        srcTemp.getLocation());
+
+    //then
+    assertAll(
+        () -> assertEquals(2, modifiedTemp.getCounter()),
+        () -> assertEquals(2, modifiedTemp.getSum()));
+
+  }
+
   @Test
   public void testWithConcurrencyTransactions() throws InterruptedException {
     //given
@@ -73,6 +94,5 @@ class LocationAvgTempServiceImplTest {
     assertAll(
         () -> assertEquals(3, modifiedTemp.getCounter()),
         () -> assertEquals(3, modifiedTemp.getSum()));
-
   }
 }
