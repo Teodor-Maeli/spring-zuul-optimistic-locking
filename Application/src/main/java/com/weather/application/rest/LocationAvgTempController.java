@@ -2,6 +2,7 @@ package com.weather.application.rest;
 import com.weather.application.aspects.RetryOnFailure;
 import com.weather.application.dto.LocationAvgTempDto;
 import com.weather.application.service.LocationAvgTempService;
+import java.math.BigDecimal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

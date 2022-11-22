@@ -3,6 +3,7 @@ import com.weather.application.domain.LocationAvgTemp;
 import com.weather.application.dto.LocationAvgTempDto;
 import com.weather.application.repository.LocationAvgTempRepository;
 import com.weather.application.service.LocationAvgTempService;
+import java.util.function.BiFunction;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ public class LocationAvgTempServiceImpl implements LocationAvgTempService {
     this.repository = repository;
   }
 
+  private final BiFunction<Integer,Double,Double> CALC_AVG =  (x, y) -> y / x;
+
   @Override
   @Transactional
   public Double updateAverageTemperature(LocationAvgTempDto newEntry) {
@@ -23,12 +26,11 @@ public class LocationAvgTempServiceImpl implements LocationAvgTempService {
       entity = repository.findByLocation(newEntry.getLocation());
       entity.setSum(entity.getSum() + newEntry.getEntry());
       repository.save(entity);
-      return LocationAvgTempService.calculateAvg(entity.getCounter(), entity.getSum());
+      return CALC_AVG.apply(entity.getCounter()+1, entity.getSum());
     }
     entity = new LocationAvgTemp(newEntry.getLocation(), newEntry.getEntry());
     repository.save(entity);
-    return LocationAvgTempService.calculateAvg(entity.getCounter()-1, newEntry.getEntry());
+    return CALC_AVG.apply(entity.getCounter(),entity.getSum());
   }
-
 
 }

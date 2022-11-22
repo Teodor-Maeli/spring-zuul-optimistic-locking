@@ -24,7 +24,7 @@ public class LocationAvgTemp {
   private Double sum;
   @Version
   @Column(name = "counter")
-  private int counter;
+  private Integer counter;
 
 
   public LocationAvgTemp() {
@@ -61,7 +61,7 @@ public class LocationAvgTemp {
     this.location = location;
   }
 
-  public int getCounter() {
+  public Integer getCounter() {
     return counter;
   }
 

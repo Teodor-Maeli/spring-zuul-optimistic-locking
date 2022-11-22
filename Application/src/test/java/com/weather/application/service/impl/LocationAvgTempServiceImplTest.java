@@ -61,7 +61,7 @@ class LocationAvgTempServiceImplTest {
 
     //then
     assertAll(
-        () -> assertEquals(2.0, modifiedTemp.getCounter()),
+        () -> assertEquals(2, modifiedTemp.getCounter()),
         () -> assertEquals(2, modifiedTemp.getSum()));
 
   }
