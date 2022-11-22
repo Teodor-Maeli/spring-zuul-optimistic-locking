@@ -30,7 +30,7 @@ public class LocationAvgTempServiceImpl implements LocationAvgTempService {
     }
     entity = new LocationAvgTemp(newEntry.getLocation(), newEntry.getEntry());
     repository.save(entity);
-    return CALC_AVG.apply(entity.getCounter(),entity.getSum());
+    return entity.getSum();
   }
 
 }

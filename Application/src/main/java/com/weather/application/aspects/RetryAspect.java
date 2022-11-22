@@ -1,5 +1,6 @@
 package com.weather.application.aspects;
 
+import java.time.LocalTime;
 import java.util.Random;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -44,6 +45,7 @@ public class RetryAspect {
       try {
         response = joinPoint.proceed(joinPoint.getArgs());
         success = true;
+        log.info("Update completed at {}", LocalTime.now());
       } catch (Exception e) {
         counter++;
         log.info("Retry No:{} FAILED! Exception was caught : {}", counter, e.getClass());
@@ -55,6 +57,7 @@ public class RetryAspect {
         log.info("Reattempting to complete");
       }
     }
+
     return response;
   }
 

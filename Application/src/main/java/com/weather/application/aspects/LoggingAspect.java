@@ -1,5 +1,6 @@
 package com.weather.application.aspects;
 
+import java.time.LocalTime;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -17,17 +18,7 @@ public class LoggingAspect {
 
   @Before("execution(* com.weather.application.service.LocationAvgTempService..*(..))")
   public void beforeLogger() {
-    log.info("Update attempting..");
-  }
-
-
-  @Pointcut("execution(* com.weather.application.service.LocationAvgTempService..*(..))")
-  public void afterReturningPointcut() {
-  }
-
-  @AfterReturning(pointcut = "afterReturningPointcut()", returning = "retVal")
-  public void afterLogger(Double retVal) {
-    log.info("Update completed with value of..{} degrees", retVal);
+    log.info("Update attempting at {} ...", LocalTime.now());
   }
 
 

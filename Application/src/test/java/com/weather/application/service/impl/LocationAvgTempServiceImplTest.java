@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import com.weather.application.domain.LocationAvgTemp;
 import com.weather.application.repository.LocationAvgTempRepository;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -43,7 +41,8 @@ class LocationAvgTempServiceImplTest {
     locationAvgTempRepository.deleteAllByLocation("VAR");
   }
 
-  private final List<String> mockMvcUris = Arrays.asList("/VAR/1","/VAR/1");
+  private final String URI = "/VAR/1";
+  private final int THREAD_POOL_SIZE = 5;
 
 
   @Test
@@ -54,7 +53,7 @@ class LocationAvgTempServiceImplTest {
     assertEquals(1.0, srcTemp.getSum());
 
     //when
-    mvc.perform(post(mockMvcUris.get(0)));
+    mvc.perform(post(URI));
 
     final LocationAvgTemp modifiedTemp = locationAvgTempRepository.findByLocation(
         srcTemp.getLocation());
@@ -73,12 +72,12 @@ class LocationAvgTempServiceImplTest {
     assertEquals(1, srcTemp.getCounter());
     assertEquals(1.0, srcTemp.getSum());
 
-    final ExecutorService executor = Executors.newFixedThreadPool(mockMvcUris.size());
+    final ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     //when
-    for (String uri : mockMvcUris) {
+    for (int i = 0 ; i < THREAD_POOL_SIZE; i++) {
       executor.execute(() -> {
         try {
-          mvc.perform(post(uri));
+          mvc.perform(post(URI));
         } catch (Exception e) {
           throw new RuntimeException(e);
         }
@@ -92,7 +91,7 @@ class LocationAvgTempServiceImplTest {
         srcTemp.getLocation());
 
     assertAll(
-        () -> assertEquals(3, modifiedTemp.getCounter()),
-        () -> assertEquals(3, modifiedTemp.getSum()));
+        () -> assertEquals(6, modifiedTemp.getCounter()),
+        () -> assertEquals(6, modifiedTemp.getSum()));
   }
 }
