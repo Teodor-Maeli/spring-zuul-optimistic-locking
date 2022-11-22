@@ -1,13 +1,9 @@
 package com.weather.application.service.impl;
-
-import com.weather.application.aspects.RetryOnFailure;
 import com.weather.application.domain.LocationAvgTemp;
 import com.weather.application.dto.LocationAvgTempDto;
 import com.weather.application.repository.LocationAvgTempRepository;
 import com.weather.application.service.LocationAvgTempService;
-import java.util.concurrent.CompletableFuture;
 import javax.transaction.Transactional;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +17,6 @@ public class LocationAvgTempServiceImpl implements LocationAvgTempService {
 
   @Override
   @Transactional
-  @RetryOnFailure(retries = 20, maxRetryDelay = 2000)
   public Double updateAverageTemperature(LocationAvgTempDto newEntry) {
     LocationAvgTemp entity;
     if (repository.existsByLocation(newEntry.getLocation())) {
@@ -33,18 +28,6 @@ public class LocationAvgTempServiceImpl implements LocationAvgTempService {
     entity = new LocationAvgTemp(newEntry.getLocation(), newEntry.getEntry());
     repository.save(entity);
     return LocationAvgTempService.calculateAvg(entity.getCounter()-1, newEntry.getEntry());
-  }
-
-
-  //Testing retry method execution on locked row
-  @Transactional
-  @Async
-  public CompletableFuture<Double> test(String location, Double newEntry) {
-      LocationAvgTemp temp = repository.findByLocation(location);
-      temp.setSum(temp.getSum() + newEntry);
-      temp.setLocation(location);
-      repository.save(temp);
-    return null;
   }
 
 

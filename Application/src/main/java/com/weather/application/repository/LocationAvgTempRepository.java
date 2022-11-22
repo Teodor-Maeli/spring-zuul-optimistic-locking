@@ -3,6 +3,7 @@ package com.weather.application.repository;
 
 
 import com.weather.application.domain.LocationAvgTemp;
+import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +14,9 @@ public interface LocationAvgTempRepository extends JpaRepository<LocationAvgTemp
 
   @Query(value = " SELECT L FROM  location_avg_temp L WHERE L.location = :location")
   LocationAvgTemp findByLocation(@Param("location")String location);
+
+  @Transactional
+  void deleteAllByLocation(String location);
 
   boolean existsByLocation(String location);
 
