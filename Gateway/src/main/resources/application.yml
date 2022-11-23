@@ -6,7 +6,17 @@ server:
 
 spring:
   application:
-    name: zuul-gateway
+    name: spring-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: weather
+          uri: lb://weather
+          predicates:
+            - Path=/weather/**
+            - Method=GET,POST,PATCH,DELETE
+
+
 #weather application register with eureka discovery server config
 eureka:
   client:
@@ -17,23 +27,4 @@ eureka:
   instance:
     hostname: localhost
 
-#Zuul routing
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 240000
-
-zuul:
-  host:
-    connect-timeout-millis: 5000000
-    socket-timeout-millis: 5000000
-  routes:
-    weather:
-      path: /weather/**
-      service-id: WEATHER
-      strip-prefix: true
-  ignored-services: '*'
 
