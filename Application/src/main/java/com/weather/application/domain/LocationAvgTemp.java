@@ -23,13 +23,14 @@ public class LocationAvgTemp {
   @Column(name = "sum")
   private Double sum;
 
+  @Version
   @Column(name = "counter")
   private Integer counter;
 
 
   public LocationAvgTemp() {
     this.sum = 0.0;
-    this.counter = 0;
+    this.counter = 1;
   }
 
 

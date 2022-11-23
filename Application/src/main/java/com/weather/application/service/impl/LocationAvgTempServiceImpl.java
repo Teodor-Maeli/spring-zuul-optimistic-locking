@@ -26,7 +26,6 @@ public class LocationAvgTempServiceImpl implements LocationAvgTempService {
         .orElse(new LocationAvgTemp());
     entity.setSum(entity.getSum() + newEntry.getEntry());
     entity.setLocation(newEntry.getLocation());
-    entity.setCounter(entity.getCounter() + 1);
     repository.save(entity);
     return CALC_AVG.apply(entity.getCounter(), entity.getSum());
   }
