@@ -28,27 +28,28 @@ class LocationAvgTempServiceImplTest {
   @Autowired
   private WebApplicationContext context;
   private MockMvc mvc;
+  private final String URI = "/TEST/1";
+  private final int THREAD_POOL_SIZE = 5;
+
 
   @BeforeEach
-  public void setup(){
+  public void setup() {
     mvc = MockMvcBuilders
         .webAppContextSetup(context)
         .build();
   }
 
   @AfterEach
-  public void cleanUp(){
-    locationAvgTempRepository.deleteAllByLocation("VAR");
+  public void cleanUp() {
+    locationAvgTempRepository.deleteAllByLocation("TEST");
   }
-
-  private final String URI = "/VAR/1";
-  private final int THREAD_POOL_SIZE = 5;
 
 
   @Test
   public void withoutConcurrencyTransactions() throws Exception {
     //given
-    final LocationAvgTemp srcTemp = locationAvgTempRepository.save(new LocationAvgTemp("VAR", 1.0));
+    final LocationAvgTemp srcTemp = locationAvgTempRepository.save(
+        new LocationAvgTemp("TEST", 1.0));
     assertEquals(1, srcTemp.getCounter());
     assertEquals(1.0, srcTemp.getSum());
 
@@ -56,7 +57,7 @@ class LocationAvgTempServiceImplTest {
     mvc.perform(post(URI));
 
     final LocationAvgTemp modifiedTemp = locationAvgTempRepository.findByLocation(
-        srcTemp.getLocation());
+        srcTemp.getLocation()).get();
 
     //then
     assertAll(
@@ -68,13 +69,14 @@ class LocationAvgTempServiceImplTest {
   @Test
   public void testWithConcurrencyTransactions() throws InterruptedException {
     //given
-    final LocationAvgTemp srcTemp = locationAvgTempRepository.save(new LocationAvgTemp("VAR", 1.0));
+    final LocationAvgTemp srcTemp = locationAvgTempRepository.save(
+        new LocationAvgTemp("TEST", 1.0));
     assertEquals(1, srcTemp.getCounter());
     assertEquals(1.0, srcTemp.getSum());
 
     final ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     //when
-    for (int i = 0 ; i < THREAD_POOL_SIZE; i++) {
+    for (int i = 0; i < THREAD_POOL_SIZE; i++) {
       executor.execute(() -> {
         try {
           mvc.perform(post(URI));
@@ -88,7 +90,7 @@ class LocationAvgTempServiceImplTest {
 
     //then
     final LocationAvgTemp modifiedTemp = locationAvgTempRepository.findByLocation(
-        srcTemp.getLocation());
+        srcTemp.getLocation()).get();
 
     assertAll(
         () -> assertEquals(6, modifiedTemp.getCounter()),

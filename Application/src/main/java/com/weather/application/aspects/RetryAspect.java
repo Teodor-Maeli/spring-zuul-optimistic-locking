@@ -35,9 +35,9 @@ public class RetryAspect {
     boolean success = false;
     int retries = ((MethodSignature) joinPoint.getSignature()).getMethod()
         .getAnnotation(RetryOnFailure.class).retries();
-    int max = ((MethodSignature) joinPoint.getSignature()).getMethod()
+    int maxDelay = ((MethodSignature) joinPoint.getSignature()).getMethod()
         .getAnnotation(RetryOnFailure.class).maxRetryDelay();
-    int min = ((MethodSignature) joinPoint.getSignature()).getMethod()
+    int minDelay = ((MethodSignature) joinPoint.getSignature()).getMethod()
         .getAnnotation(RetryOnFailure.class).minRetryDelay();
     int counter = 0;
     while (!success) {
@@ -49,7 +49,7 @@ public class RetryAspect {
       } catch (Exception e) {
         counter++;
         log.info("Retry No:{} FAILED! Exception was caught : {}", counter, e.getClass());
-        Thread.sleep(new Random().nextInt(max - min + 1) + min);
+        Thread.sleep(new Random().nextInt(maxDelay - minDelay + 1) + minDelay);
         if (counter >= retries) {
           log.info("Reached max retry attempts {},giving up...", e.getClass());
           throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Request did not proceed , try later!");

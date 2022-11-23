@@ -22,20 +22,22 @@ public class LocationAvgTemp {
   private String location;
   @Column(name = "sum")
   private Double sum;
-  @Version
+
   @Column(name = "counter")
   private Integer counter;
 
 
   public LocationAvgTemp() {
+    this.sum = 0.0;
+    this.counter = 0;
   }
 
-  public LocationAvgTemp(String location, Double sum) {
+
+  public LocationAvgTemp(String location ,Double sum) {
     this.location = location;
     this.sum = sum;
     this.counter = 1;
   }
-
 
   public Long getId() {
     return id;
@@ -65,4 +67,7 @@ public class LocationAvgTemp {
     return counter;
   }
 
+  public void setCounter(Integer counter) {
+    this.counter = counter;
+  }
 }

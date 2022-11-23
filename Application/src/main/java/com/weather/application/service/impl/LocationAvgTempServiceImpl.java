@@ -1,4 +1,5 @@
 package com.weather.application.service.impl;
+
 import com.weather.application.domain.LocationAvgTemp;
 import com.weather.application.dto.LocationAvgTempDto;
 import com.weather.application.repository.LocationAvgTempRepository;
@@ -16,21 +17,18 @@ public class LocationAvgTempServiceImpl implements LocationAvgTempService {
     this.repository = repository;
   }
 
-  private final BiFunction<Integer,Double,Double> CALC_AVG =  (x, y) -> y / x;
+  private final BiFunction<Integer, Double, Double> CALC_AVG = (x, y) -> y / x;
 
   @Override
   @Transactional
   public Double updateAverageTemperature(LocationAvgTempDto newEntry) {
-    LocationAvgTemp entity;
-    if (repository.existsByLocation(newEntry.getLocation())) {
-      entity = repository.findByLocation(newEntry.getLocation());
-      entity.setSum(entity.getSum() + newEntry.getEntry());
-      repository.save(entity);
-      return CALC_AVG.apply(entity.getCounter()+1, entity.getSum());
-    }
-    entity = new LocationAvgTemp(newEntry.getLocation(), newEntry.getEntry());
+    LocationAvgTemp entity = repository.findByLocation(newEntry.getLocation())
+        .orElse(new LocationAvgTemp());
+    entity.setSum(entity.getSum() + newEntry.getEntry());
+    entity.setLocation(newEntry.getLocation());
+    entity.setCounter(entity.getCounter() + 1);
     repository.save(entity);
-    return entity.getSum();
+    return CALC_AVG.apply(entity.getCounter(), entity.getSum());
   }
 
 }
