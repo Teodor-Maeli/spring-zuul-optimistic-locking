@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public interface LocationAvgTempRepository extends JpaRepository<LocationAvgTemp,Long> {
 
   @Query(value = " SELECT L FROM  location_avg_temp L WHERE L.location = :location")
-  @Lock(LockModeType.PESSIMISTIC_WRITE)
+//  @Lock(LockModeType.PESSIMISTIC_WRITE)
   Optional<LocationAvgTemp> findByLocation(@Param("location")String location);
 
   @Transactional

@@ -19,7 +19,7 @@ public class LocationAvgTempController {
   }
 
   @PostMapping("/{location}/{temperature}")
-//  @RetryOnFailure(retries = 1000, maxRetryDelay = 2000)
+  @RetryOnFailure(retries = 1000, maxRetryDelay = 2000)
   public ResponseEntity<Double> updateLocation(@PathVariable String location, @PathVariable double temperature) {
     LocationAvgTempDto dto = new LocationAvgTempDto(location,temperature);
     return ResponseEntity.ok(service.updateAverageTemperature(dto));
