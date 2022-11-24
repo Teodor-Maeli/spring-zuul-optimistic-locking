@@ -7,36 +7,3 @@ server:
 spring:
   application:
     name: spring-gateway
-  cloud:
-    gateway:
-      routes:
-        - id: weather
-          uri: lb://weather
-          predicates:
-            - Path=/weather/**
-            - Method=GET,POST,PATCH,DELETE
-          filters:
-            - name: Retry
-              args:
-                retries: 10000
-                series: SERVER_ERROR
-                methods: GET,POST
-                backoff:
-                  firstBackoff: 10ms
-                  maxBackoff: 500ms
-
-
-
-
-
-#weather application register with eureka discovery server config
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone:  ${EUREKA_URI:http://localhost:5001/eureka}
-  instance:
-    hostname: localhost
-
-
